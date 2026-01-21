@@ -32,6 +32,7 @@ set(PROJECT_HEADERS
     include/Gameplay/Enemy.h
     include/Gameplay/GameObject.h
     include/Gameplay/Zombie.h
+    include/Gameplay/Dark.h
 
     include/Render/SFMLOrthogonalLayer.h
 
@@ -47,6 +48,7 @@ set(PROJECT_SOURCES
 
     src/Gameplay/Enemy.cpp
     src/Gameplay/Zombie.cpp
+    src/Gameplay/Dark.cpp
 
     src/main.cpp
 )
