@@ -2,6 +2,7 @@
 #include <Core/World.h>
 #include <Core/CollisionMap.h>
 #include <Gameplay/Zombie.h>
+#include <Gameplay/Dark.h>
 #include <Render/SFMLOrthogonalLayer.h>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <tmxlite/Map.hpp>
@@ -9,6 +10,7 @@
 World::~World()
 {
 	delete m_enemy;
+	delete m_dark;
 	delete m_layerZero;
 	delete m_layerOne;
 	delete m_layerTwo;
@@ -40,6 +42,7 @@ bool World::load()
 	m_collisionMap = new CollisionMap(*m_map, 0);
 
 	zombie->setCollisionMap(m_collisionMap);
+	m_dark = Dark::create({ 00.f, 00.f }, m_collisionMap);
 
 	m_layerZero = new MapLayer(*m_map, 0);
 	m_layerOne = new MapLayer(*m_map, 1);
@@ -63,4 +66,6 @@ void World::render(sf::RenderWindow& window)
 	window.draw(*m_layerTwo);
 	if (m_enemy)
 		m_enemy->render(window);
+	if (m_dark)
+		m_dark->render(window);
 }
