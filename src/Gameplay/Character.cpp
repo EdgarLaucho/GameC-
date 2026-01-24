@@ -1,7 +1,7 @@
-#include <Gameplay/Enemy.h>
+#include <Gameplay/Character.h>
 #include <SFML/Graphics/RenderWindow.hpp>
 
-bool Enemy::init(const EnemyDescriptor& enemyDescriptor)
+bool Character::init(const CharacterDescriptor& enemyDescriptor)
 {
 	m_sprite.setTexture(*enemyDescriptor.texture);
 	m_sprite.setPosition(enemyDescriptor.position);
@@ -16,15 +16,16 @@ bool Enemy::init(const EnemyDescriptor& enemyDescriptor)
 	return true;
 }
 
-void Enemy::setCollisionMap(CollisionMap* collisionMap)
+void Character::setCollisionMap(CollisionMap* collisionMap)
 {
 	m_collisionMap = collisionMap;
 }
 
-void Enemy::gravity(float deltaMilliseconds, float gravity)
+void Character::gravity(float deltaMilliseconds, float gravity)
 {
-        m_velocity.y += gravity * deltaMilliseconds;
-        float newY = m_position.y + m_velocity.y * deltaMilliseconds;
+        float dt = deltaMilliseconds / 1000.f;
+        m_velocity.y += gravity * dt;
+        float newY = m_position.y + m_velocity.y * dt;
 
         if (m_collisionMap)
         {
@@ -45,9 +46,16 @@ void Enemy::gravity(float deltaMilliseconds, float gravity)
                 m_velocity.y = 0.f;
                 m_isOnGround = true;
 
-                // Alineamos al suelo correctamente
+               
                 newY = tileY * tileSize.y - scaledHeight;
             }
+            else 
+            {
+				m_isOnGround = false;
+            }
+        }else
+        {
+            m_isOnGround = false;
         }
 
         m_position.y = newY;
@@ -56,12 +64,12 @@ void Enemy::gravity(float deltaMilliseconds, float gravity)
 
 
 
-void Enemy::update(float deltaMilliseconds)
+void Character::update(float deltaMilliseconds)
 {
 	m_sprite.setPosition(m_position);
 }
 
-void Enemy::render(sf::RenderWindow& window)
+void Character::render(sf::RenderWindow& window)
 {
 	// Extend this mechanism to be able to support animations
 	m_sprite.setTextureRect(sf::IntRect(0, 0, 

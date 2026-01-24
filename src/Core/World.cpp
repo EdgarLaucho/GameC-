@@ -2,15 +2,15 @@
 #include <Core/World.h>
 #include <Core/CollisionMap.h>
 #include <Gameplay/Zombie.h>
-#include <Gameplay/Dark.h>
+#include <Gameplay/Robot.h>
 #include <Render/SFMLOrthogonalLayer.h>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <tmxlite/Map.hpp>
 
 World::~World()
 {
-	delete m_enemy;
-	delete m_dark;
+	delete m_character;
+	delete m_robot;
 	delete m_layerZero;
 	delete m_layerOne;
 	delete m_layerTwo;
@@ -27,13 +27,13 @@ bool World::load()
 	Zombie::ZombieDescriptor zombieDescriptor;
 	zombieDescriptor.texture = zombieTexture;
 	zombieDescriptor.position = { 0.f, 700.f };
-	zombieDescriptor.speed = { 400.f * millisecondsToSeconds, .0f }; // 400 units per second, or 0.4 units per millisecond, using the latter so it's in alignment with delta time
+	zombieDescriptor.speed = { 400.f , .0f }; // 400 units per second, or 0.4 units per millisecond, using the latter so it's in alignment with delta time
 	zombieDescriptor.tileWidth = 192.f;
 	zombieDescriptor.tileHeight = 256.f;
 	Zombie* zombie = new Zombie();
 	const bool initOk = zombie->init(zombieDescriptor);
 
-	m_enemy = zombie;
+	m_character = zombie;
 
 	// To-Do, Load level: this should have its own class
 	m_map = new tmx::Map();
@@ -42,7 +42,7 @@ bool World::load()
 	m_collisionMap = new CollisionMap(*m_map, 0);
 
 	zombie->setCollisionMap(m_collisionMap);
-	m_dark = Dark::create({ 00.f, 00.f }, m_collisionMap);
+	m_robot = Robot::create({ 530.f, 620.f }, m_collisionMap);
 
 	m_layerZero = new MapLayer(*m_map, 0);
 	m_layerOne = new MapLayer(*m_map, 1);
@@ -55,8 +55,12 @@ bool World::load()
 void World::update(uint32_t deltaMilliseconds)
 {
 	m_layerZero->update(sf::milliseconds(deltaMilliseconds));
-	if (m_enemy)
-		m_enemy->update(static_cast<float>(deltaMilliseconds));
+
+	if (m_character)
+		m_character->update(static_cast<float>(deltaMilliseconds));
+
+	if(m_robot)
+		m_robot->update(static_cast<float>(deltaMilliseconds));
 }
 
 void World::render(sf::RenderWindow& window)
@@ -64,8 +68,8 @@ void World::render(sf::RenderWindow& window)
 	window.draw(*m_layerZero);
 	window.draw(*m_layerOne);
 	window.draw(*m_layerTwo);
-	if (m_enemy)
-		m_enemy->render(window);
-	if (m_dark)
-		m_dark->render(window);
+	if (m_character)
+		m_character->render(window);
+	if (m_robot)
+		m_robot->render(window);
 }

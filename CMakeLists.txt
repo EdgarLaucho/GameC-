@@ -29,10 +29,10 @@ set(PROJECT_HEADERS
     include/Core/World.h
     include/Core/CollisionMap.h
 
-    include/Gameplay/Enemy.h
+    include/Gameplay/Character.h
     include/Gameplay/GameObject.h
     include/Gameplay/Zombie.h
-    include/Gameplay/Dark.h
+    include/Gameplay/Robot.h
 
     include/Render/SFMLOrthogonalLayer.h
 
@@ -46,9 +46,9 @@ set(PROJECT_SOURCES
     src/Core/World.cpp
     src/Core/CollisionMap.cpp
 
-    src/Gameplay/Enemy.cpp
+    src/Gameplay/Character.cpp
     src/Gameplay/Zombie.cpp
-    src/Gameplay/Dark.cpp
+    src/Gameplay/Robot.cpp
 
     src/main.cpp
 )

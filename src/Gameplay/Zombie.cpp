@@ -3,11 +3,11 @@
 
 bool Zombie::init(const ZombieDescriptor& zombieDescriptor)
 {
-	if (!Enemy::init(zombieDescriptor))
+	if (!Character::init(zombieDescriptor))
 		return false;
 
 	
-	m_sprite.setScale(0.4f, 0.4f);
+	m_sprite.setScale(0.3f, 0.3f);
 	m_speed = zombieDescriptor.speed;
 	m_spawnPosition = m_position;
 	return true;
@@ -15,6 +15,7 @@ bool Zombie::init(const ZombieDescriptor& zombieDescriptor)
 
 void Zombie::update(float deltaMilliseconds)
 {
+	float dt = deltaMilliseconds / 1000.f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		m_direction.x = -1.0f;
@@ -27,11 +28,12 @@ void Zombie::update(float deltaMilliseconds)
 	{
 		m_direction.x = .0f;
 	}
-
+	
 	// Update final position
 	// IMPORTANT NOTE!! We are using delta time to change the position according to the elapsed time so, it doesn't matter how many FPS (calls to update per second) we do, 
 	// the sprite changes according to the elapsed time and not to the number of calls
-	m_position.x += (m_direction.x * m_speed.x * deltaMilliseconds);
+	m_position.x += (m_direction.x * m_speed.x * dt);
+
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_isOnGround)
 	{
 		m_velocity.y = -m_jumpForce;
@@ -39,6 +41,7 @@ void Zombie::update(float deltaMilliseconds)
 	}
 	
 	gravity(deltaMilliseconds, m_gravity);
+
 	if(m_position.y > m_deathY)
 	{
 		m_position = m_spawnPosition;
@@ -46,5 +49,5 @@ void Zombie::update(float deltaMilliseconds)
 		m_isOnGround = false;
 	}
 
-	Enemy::update(deltaMilliseconds);
+	Character::update(deltaMilliseconds);
 }

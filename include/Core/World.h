@@ -2,9 +2,9 @@
 
 #include <cstdint>
 
-class Enemy;
+class Character;
 class CollisionMap;
-class Dark;
+class Robot;
 
 namespace sf
 {
@@ -35,8 +35,8 @@ class World
 	private:
 
 		// This is just an example. Think a good way to group the actors of your game. If they need any type of manager, etc...
-		Enemy* m_enemy{ nullptr };
-		Dark* m_dark{ nullptr };
+		Character* m_character{ nullptr };
+		Robot* m_robot{ nullptr };
 
 		// To-Do: This should be in its own class, something like "Level" should work
 		tmx::Map* m_map{ nullptr };

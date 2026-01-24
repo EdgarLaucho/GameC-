@@ -6,11 +6,11 @@
 #include <Render/SFMLOrthogonalLayer.h>
 #include <Core/CollisionMap.h>
 
-class Enemy : public GameObject
+class Character : public GameObject
 {
 	public:
 
-		struct EnemyDescriptor
+		struct CharacterDescriptor
 		{
 			sf::Vector2f position;
 			sf::Texture* texture{ nullptr };
@@ -18,9 +18,9 @@ class Enemy : public GameObject
 			float tileHeight{ .0f };
 		};
 
-		~Enemy() override = default;
+		~Character() override = default;
 
-		bool init(const EnemyDescriptor& enemyDescriptor);
+		bool init(const CharacterDescriptor& enemyDescriptor);
 
 		void update(float deltaMilliseconds) override;
 		void render(sf::RenderWindow& window) override;
