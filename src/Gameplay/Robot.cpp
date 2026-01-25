@@ -1,9 +1,9 @@
 #include <Gameplay/Robot.h>
-#include <core/AssetManager.h>
-#include <core//CollisionMap.h>
+#include <Core/AssetManager.h>
+#include <Core/CollisionMap.h>
 #include <SFML/Graphics/Texture.hpp>
 
-Robot* Robot::create(const sf::Vector2f& postion, CollisionMap* collisionMap)
+Robot* Robot::createRobot(const sf::Vector2f& postion, CollisionMap* collisionMap)
 {
 	sf::Texture* robotTexture = AssetManager::getInstance()->loadTexture("../Data/Images/Enemies/Robot.png");
 
@@ -11,8 +11,8 @@ Robot* Robot::create(const sf::Vector2f& postion, CollisionMap* collisionMap)
 	robotDescriptor.texture = robotTexture;
 	robotDescriptor.position = postion;
 	robotDescriptor.speed = { 100.f };
-	robotDescriptor.tileWidth = 192.f/2.f;
-	robotDescriptor.tileHeight = 256.f/2.f;
+	robotDescriptor.tileWidth = 96.f;
+	robotDescriptor.tileHeight = 128.f;
 	Robot* robot = new Robot();
 
 	if (!robot->init(robotDescriptor))
@@ -27,10 +27,11 @@ Robot* Robot::create(const sf::Vector2f& postion, CollisionMap* collisionMap)
 
 bool Robot::init(const RobotDescriptor& robotDescriptor)
 {
+	if(!Character::init(robotDescriptor))
+	{
+		return false;
+	}
 	bool ok = Character::init(robotDescriptor);
-	
-	int spriteWidth = 32;
-	int spriteHeight = 32;
 
 	m_sprite.setScale(1.f,1.f);
 	m_speed = robotDescriptor.speed;
@@ -82,13 +83,12 @@ void Robot::update(float deltaMilliseconds)
 	{
 		m_direction *= -1;
 
-		m_position.x += m_direction * 2.f;
+		newPos.x = m_position.x + m_direction*2.f;
+	}else
+	{
+		newPos.x = m_position.x + move;
 	}
 
-
-
-	
-	m_position.x += m_direction * m_speed * dt;
-
+	m_position.x = newPos.x;
 	Character::update(deltaMilliseconds);
 }

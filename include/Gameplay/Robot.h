@@ -11,7 +11,7 @@ public:
 		float speed{ 0.f };
 	};
 
-	static Robot* create(const sf::Vector2f& postion, CollisionMap* collisionMap);
+	static Robot* createRobot(const sf::Vector2f& postion, CollisionMap* collisionMap);
 
 	bool init(const RobotDescriptor& robotDescriptor);
 

@@ -1,15 +1,19 @@
 #include <Gameplay/Character.h>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <iostream>
 
-bool Character::init(const CharacterDescriptor& enemyDescriptor)
+
+bool Character::init(const CharacterDescriptor& characterDescriptor)
 {
-	m_sprite.setTexture(*enemyDescriptor.texture);
-	m_sprite.setPosition(enemyDescriptor.position);
-	
-	m_tileWidth = enemyDescriptor.tileWidth;
-	m_tileHeight = enemyDescriptor.tileHeight;
-
-	m_position = enemyDescriptor.position;
+	if(!characterDescriptor.texture)
+    {
+        std::cerr << "Textura nula" << std::endl;
+            return false;
+    }
+    m_tileWidth = characterDescriptor.tileWidth;
+    m_tileHeight = characterDescriptor.tileHeight;
+    m_sprite.setTexture(*characterDescriptor.texture);
+	m_position = characterDescriptor.position;
 	m_velocity = sf::Vector2f(0.f, 0.f);
 	m_isOnGround = false;
 	
@@ -34,24 +38,30 @@ void Character::gravity(float deltaMilliseconds, float gravity)
             float scaledWidth = m_tileWidth * m_sprite.getScale().x;
             float scaledHeight = m_tileHeight * m_sprite.getScale().y;
 
-            // Punto inferior del zombie (los pies)
+            
             float feetY = newY + scaledHeight;
-            float centerX = m_position.x + scaledWidth * 0.5f;
-
-            int tileX = static_cast<int>(centerX / tileSize.x);
+            float margin = 3.f;
+            float leftX = m_position.x + margin;
+            float rightX = m_position.x + scaledWidth - margin;
             int tileY = static_cast<int>(feetY / tileSize.y);
 
-            if (m_collisionMap->isSolid(tileX, tileY) && m_velocity.y > 0.f)
+            int tileLeftX = static_cast<int>(leftX / tileSize.x);
+            int tileRightX = static_cast<int>(rightX / tileSize.x);
+
+            bool groundLeft = m_collisionMap->isSolid(tileLeftX, tileY);
+            bool groundRight = m_collisionMap->isSolid(tileRightX, tileY);
+
+            if ((groundLeft || groundRight) && m_velocity.y > 0.f)
             {
                 m_velocity.y = 0.f;
                 m_isOnGround = true;
 
-               
+                
                 newY = tileY * tileSize.y - scaledHeight;
             }
-            else 
+            else
             {
-				m_isOnGround = false;
+                m_isOnGround = false;
             }
         }else
         {

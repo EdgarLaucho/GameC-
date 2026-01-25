@@ -20,7 +20,7 @@ class Character : public GameObject
 
 		~Character() override = default;
 
-		bool init(const CharacterDescriptor& enemyDescriptor);
+		bool init(const CharacterDescriptor& characterDescriptor);
 
 		void update(float deltaMilliseconds) override;
 		void render(sf::RenderWindow& window) override;

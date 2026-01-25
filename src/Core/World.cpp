@@ -20,36 +20,36 @@ World::~World()
 
 bool World::load()
 {
-	constexpr float millisecondsToSeconds = 1 / 1000.f;
 
 	// To-Do, read ALL from file, this is just a quick example to understand that here is where entities are created but consider grouping/managing actors in a smarter way
-	sf::Texture* zombieTexture = AssetManager::getInstance()->loadTexture("../Data/Images/Enemies/zombie.png");
-	Zombie::ZombieDescriptor zombieDescriptor;
-	zombieDescriptor.texture = zombieTexture;
-	zombieDescriptor.position = { 0.f, 700.f };
-	zombieDescriptor.speed = { 400.f , .0f }; // 400 units per second, or 0.4 units per millisecond, using the latter so it's in alignment with delta time
-	zombieDescriptor.tileWidth = 192.f;
-	zombieDescriptor.tileHeight = 256.f;
-	Zombie* zombie = new Zombie();
-	const bool initOk = zombie->init(zombieDescriptor);
 
-	m_character = zombie;
 
 	// To-Do, Load level: this should have its own class
 	m_map = new tmx::Map();
-	m_map->load("../Data/Levels/demo.tmx");
+	if(!m_map->load("../Data/Levels/demo.tmx"))
+	{
+		return false;
+	}
 
 	m_collisionMap = new CollisionMap(*m_map, 0);
 
-	zombie->setCollisionMap(m_collisionMap);
-	m_robot = Robot::create({ 530.f, 620.f }, m_collisionMap);
+	m_character = Zombie::createZombie({ 100.f, 620.f }, m_collisionMap);
+	if (!m_character)
+	{
+		return false;
+	}
+	m_robot = Robot::createRobot({ 530.f, 620.f }, m_collisionMap);
+	if (!m_robot)
+	{
+		return false;
+	}
 
 	m_layerZero = new MapLayer(*m_map, 0);
 	m_layerOne = new MapLayer(*m_map, 1);
 	m_layerTwo = new MapLayer(*m_map, 2);
 
 
-	return initOk;
+	return true;
 }
 
 void World::update(uint32_t deltaMilliseconds)

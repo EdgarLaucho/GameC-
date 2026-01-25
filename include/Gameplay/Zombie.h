@@ -13,7 +13,7 @@ class Zombie : public Character
 		};
 
 		bool init(const ZombieDescriptor& enemyDescriptor);
-
+		static Zombie* createZombie(const sf::Vector2f& postion, CollisionMap* collisionMap);
 		void update(float deltaMilliseconds) override;
 
 

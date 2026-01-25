@@ -1,6 +1,28 @@
 #include <Gameplay/Zombie.h>
+#include <Core/AssetManager.h>
+#include <Core/CollisionMap.h>
 #include <SFML/Window/Keyboard.hpp>
+Zombie* Zombie::createZombie(const sf::Vector2f& postion, CollisionMap* collisionMap)
+{
+	sf::Texture* zombieTexture = AssetManager::getInstance()->loadTexture("../Data/Images/Enemies/zombie.png");
+	Zombie::ZombieDescriptor zombieDescriptor;
+	zombieDescriptor.texture = zombieTexture;
+	zombieDescriptor.position = postion;
+	zombieDescriptor.speed = { 200.f , .0f }; // 400 units per second, or 0.4 units per millisecond, using the latter so it's in alignment with delta time
+	zombieDescriptor.tileWidth = 192.f;
+	zombieDescriptor.tileHeight = 256.f;
 
+	Zombie* zombie = new Zombie();
+
+	if (!zombie->init(zombieDescriptor))
+	{
+		delete zombie;
+		return nullptr;
+	}
+
+	zombie->setCollisionMap(collisionMap);
+	return zombie;
+}
 bool Zombie::init(const ZombieDescriptor& zombieDescriptor)
 {
 	if (!Character::init(zombieDescriptor))

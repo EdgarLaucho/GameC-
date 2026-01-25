@@ -28,8 +28,12 @@ int main()
     while (game.isRunning())
     {
         const sf::Time elapsed = clock.restart();
-
-        game.update(elapsed.asMilliseconds());
+		uint32_t deltaMs = elapsed.asMilliseconds();
+        if (deltaMs>50)
+        {
+            deltaMs = 50;
+        }
+        game.update(deltaMs);
         game.render();
     }
 }
