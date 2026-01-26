@@ -28,6 +28,8 @@ set(PROJECT_HEADERS
     include/Core/Game.h
     include/Core/World.h
     include/Core/CollisionMap.h
+    include/Core/SpawnPool.h
+    include/Core/TimedSpawner.h
 
     include/Gameplay/Character.h
     include/Gameplay/GameObject.h
@@ -45,6 +47,8 @@ set(PROJECT_SOURCES
     src/Core/Game.cpp
     src/Core/World.cpp
     src/Core/CollisionMap.cpp
+    src/Core/SpawnPool.cpp
+    src/Core/TimedSpawner.cpp
 
     src/Gameplay/Character.cpp
     src/Gameplay/Zombie.cpp
