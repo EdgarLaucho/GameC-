@@ -15,6 +15,7 @@ public:
 
 	bool init(const RobotDescriptor& robotDescriptor);
 
+	void respawn(const sf::Vector2f& position);
 	void update(float deltaMilliseconds) override;
 	void setCollisionMap(CollisionMap* map);
 

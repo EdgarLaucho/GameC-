@@ -10,7 +10,7 @@ Robot* Robot::createRobot(const sf::Vector2f& postion, CollisionMap* collisionMa
 	Robot::RobotDescriptor robotDescriptor;
 	robotDescriptor.texture = robotTexture;
 	robotDescriptor.position = postion;
-	robotDescriptor.speed = { 100.f };
+	robotDescriptor.speed = 100.f ;
 	robotDescriptor.tileWidth = 96.f;
 	robotDescriptor.tileHeight = 128.f;
 	Robot* robot = new Robot();
@@ -31,12 +31,11 @@ bool Robot::init(const RobotDescriptor& robotDescriptor)
 	{
 		return false;
 	}
-	bool ok = Character::init(robotDescriptor);
 
 	m_sprite.setScale(1.f,1.f);
 	m_speed = robotDescriptor.speed;
 	m_direction = 1;
-	return ok;
+	return true;
 }
 
 void Robot::setCollisionMap(CollisionMap* collisionMap) 
@@ -46,6 +45,7 @@ void Robot::setCollisionMap(CollisionMap* collisionMap)
 
 void Robot::update(float deltaMilliseconds) 
 {
+	if (!isActive()) return;
 	if (!m_collisionMap) return;
 
 	float dt = deltaMilliseconds / 1000.f;
@@ -91,4 +91,14 @@ void Robot::update(float deltaMilliseconds)
 
 	m_position.x = newPos.x;
 	Character::update(deltaMilliseconds);
+}
+
+void Robot::respawn(const sf::Vector2f& position) 
+{
+	setActive(true);
+	m_position = position;
+	m_velocity = { 0.f, 0.f };
+	m_isOnGround = false;
+	m_direction = 1;
+	m_sprite.setPosition(m_position);
 }
