@@ -58,8 +58,14 @@ bool World::load()
 	m_layerOne = new MapLayer(*m_map, 1);
 	m_layerTwo = new MapLayer(*m_map, 2);
 
-	m_robotPool.acquire({ 530.f, 620.f });
-	m_robotPool.acquire({ 800.f, 620.f });
+	//m_robotPool.acquire({ 530.f, 620.f });
+	//m_robotPool.acquire({ 900.f, 580.f });
+	
+	m_robotSpawner.setSpawnPoints({ {530.f, 620.f}, {900.f, 580.f}, {1200.f, 550.f} });
+	m_robotSpawner.SetInterval(3.0f);
+	m_robotSpawner.setMaxAlive(3);
+	m_robotSpawner.setLifetime(7.f);
+	m_robotSpawner.setEnabled(true);
 
 	return true;
 }
@@ -70,6 +76,8 @@ void World::update(uint32_t deltaMilliseconds)
 
 	if (m_character)
 		m_character->update(static_cast<float>(deltaMilliseconds));
+
+	m_robotSpawner.update(static_cast<float>(deltaMilliseconds), m_robotPool);
 	m_robotPool.updateAll(static_cast<float>(deltaMilliseconds));
 
 	

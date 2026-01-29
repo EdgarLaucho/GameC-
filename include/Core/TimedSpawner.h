@@ -16,15 +16,16 @@ class TimedSpawner
 		void setSpawnPoints(const std::vector<sf::Vector2f>& points);
 
 		void update(float deltaMs, SpawnPool& pool);
+
 	private:
 		bool m_enabled = true;
 		float m_interval = 2.0f;
 		float m_lifeTime = 10;
-		float m_timer = 0.f;
+		float m_spawnTimer = 0.f;
 		int m_maxAlive = 3;
 
 		std::vector<sf::Vector2f> m_spawnPoints;
-		size_t m_nextSpawnPoint = 0;
+		size_t m_nextSpawnIndex = 0;
 
-		std::unordered_map<GameObject*, float> m_activeObjects; 
+		std::unordered_map<GameObject*, float> m_timeToLive; 
 };
