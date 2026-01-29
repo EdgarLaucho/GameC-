@@ -1,10 +1,14 @@
 #pragma once
 
 #include <cstdint>
+#include <Core/SpawnPool.h>
+#include <Core/TimedSpawner.h>
+#include <memory>
 
 class Character;
 class CollisionMap;
 class Robot;
+class GameObject;
 
 namespace sf
 {
@@ -35,8 +39,11 @@ class World
 	private:
 
 		// This is just an example. Think a good way to group the actors of your game. If they need any type of manager, etc...
+		std::unique_ptr<GameObject> createRobot(const sf::Vector2f& position);
+		static void resetRobot(GameObject& object, const sf::Vector2f& position);
 		Character* m_character{ nullptr };
-		Robot* m_robot{ nullptr };
+		SpawnPool m_robotPool;
+		TimedSpawner m_robotSpawner;
 
 		// To-Do: This should be in its own class, something like "Level" should work
 		tmx::Map* m_map{ nullptr };

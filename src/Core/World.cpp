@@ -1,6 +1,7 @@
 #include <Core/AssetManager.h>
 #include <Core/World.h>
 #include <Core/CollisionMap.h>
+#include <Gameplay/GameObject.h>
 #include <Gameplay/Zombie.h>
 #include <Gameplay/Robot.h>
 #include <Render/SFMLOrthogonalLayer.h>
@@ -10,12 +11,23 @@
 World::~World()
 {
 	delete m_character;
-	delete m_robot;
+	
 	delete m_layerZero;
 	delete m_layerOne;
 	delete m_layerTwo;
 	delete m_collisionMap;
 	delete m_map;
+}
+
+std::unique_ptr<GameObject> World::createRobot(const sf::Vector2f& position)
+{
+	Robot* robot = Robot::createRobot(position, m_collisionMap);
+	return std::unique_ptr<GameObject>(robot);
+}
+
+void World::resetRobot(GameObject& object, const sf::Vector2f& position)
+{
+	static_cast<Robot&>(object).respawn(position);
 }
 
 bool World::load()
@@ -33,21 +45,21 @@ bool World::load()
 
 	m_collisionMap = new CollisionMap(*m_map, 0);
 
+	m_robotPool.init([this](const sf::Vector2f& position) { return this->createRobot(position); }, &World::resetRobot);
+	
 	m_character = Zombie::createZombie({ 100.f, 620.f }, m_collisionMap);
 	if (!m_character)
 	{
 		return false;
 	}
-	m_robot = Robot::createRobot({ 530.f, 620.f }, m_collisionMap);
-	if (!m_robot)
-	{
-		return false;
-	}
+	
 
 	m_layerZero = new MapLayer(*m_map, 0);
 	m_layerOne = new MapLayer(*m_map, 1);
 	m_layerTwo = new MapLayer(*m_map, 2);
 
+	m_robotPool.acquire({ 530.f, 620.f });
+	m_robotPool.acquire({ 800.f, 620.f });
 
 	return true;
 }
@@ -58,9 +70,9 @@ void World::update(uint32_t deltaMilliseconds)
 
 	if (m_character)
 		m_character->update(static_cast<float>(deltaMilliseconds));
+	m_robotPool.updateAll(static_cast<float>(deltaMilliseconds));
 
-	if(m_robot)
-		m_robot->update(static_cast<float>(deltaMilliseconds));
+	
 }
 
 void World::render(sf::RenderWindow& window)
@@ -70,6 +82,5 @@ void World::render(sf::RenderWindow& window)
 	window.draw(*m_layerTwo);
 	if (m_character)
 		m_character->render(window);
-	if (m_robot)
-		m_robot->render(window);
+	m_robotPool.renderAll(window);
 }

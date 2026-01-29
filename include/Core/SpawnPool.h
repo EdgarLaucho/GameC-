@@ -3,7 +3,11 @@
 #include <memory>
 #include <functional>
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
+
+namespace sf 
+{
+	class RenderWindow;
+}
 
 class GameObject;
 
@@ -14,9 +18,10 @@ class SpawnPool
 		using ResetFn = std::function<void(GameObject&, const sf::Vector2f&)>;
 
 		SpawnPool();
-		SpawnPool(CreateFn createFn, ResetFn resetFn);
+		~SpawnPool();
 
 		GameObject* acquire(const sf::Vector2f& position);
+		void init(CreateFn createFn, ResetFn resetFn);
 		void updateAll(float deltaMs);
 		void renderAll(sf::RenderWindow& window);
 		int activeCount() const;

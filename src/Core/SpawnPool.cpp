@@ -3,8 +3,12 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 SpawnPool::SpawnPool() = default;
-
-SpawnPool::SpawnPool(CreateFn createFn, ResetFn resetFn) : m_createFn(std::move(createFn)), m_resetFn(std::move(resetFn)){}
+SpawnPool::~SpawnPool() = default;
+void SpawnPool::init(CreateFn createFn, ResetFn resetFn)
+{
+	m_createFn = std::move(createFn);
+	m_resetFn = std::move(resetFn);
+}
 
 GameObject* SpawnPool::acquire(const sf::Vector2f& position)
 {
