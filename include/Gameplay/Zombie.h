@@ -15,10 +15,12 @@ class Zombie : public Character
 		bool init(const ZombieDescriptor& enemyDescriptor);
 		static Zombie* createZombie(const sf::Vector2f& postion, CollisionMap* collisionMap);
 		void update(float deltaMilliseconds) override;
+		void respawnAtStart();
+		sf::FloatRect getBounds() const override;
+		
 
 
 	private:
-		
 		sf::Vector2f m_direction{ .0f, .0f };
 		sf::Vector2f m_speed{ .0f, .0f };
 

@@ -2,6 +2,9 @@
 #include <Core/AssetManager.h>
 #include <Core/CollisionMap.h>
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+
 Zombie* Zombie::createZombie(const sf::Vector2f& postion, CollisionMap* collisionMap)
 {
 	sf::Texture* zombieTexture = AssetManager::getInstance()->loadTexture("../Data/Images/Enemies/zombie.png");
@@ -73,3 +76,26 @@ void Zombie::update(float deltaMilliseconds)
 
 	Character::update(deltaMilliseconds);
 }
+
+void Zombie::respawnAtStart()
+{
+	m_position = m_spawnPosition;
+	m_velocity = { 0.f,0.f };
+	m_isOnGround = false;
+}
+
+sf::FloatRect Zombie::getBounds() const
+{
+	sf::FloatRect b = m_sprite.getGlobalBounds();
+
+	const float insetX = 24.f;
+	const float insetY = 24.f;
+
+	b.left += insetX;
+	b.top += insetY;
+	b.width -= insetX * 2.f;
+	b.height -= insetY * 2.f;
+	return b;
+}
+
+

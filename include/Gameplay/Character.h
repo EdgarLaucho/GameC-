@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <tmxlite/Map.hpp>
 #include <Render/SFMLOrthogonalLayer.h>
+#include <SFML/Graphics/Rect.hpp>
 #include <Core/CollisionMap.h>
 
 class Character : public GameObject
@@ -26,7 +27,10 @@ class Character : public GameObject
 		void render(sf::RenderWindow& window) override;
 
 		void gravity(float daltaMilliseconds, float gravity);
-		void setCollisionMap(CollisionMap* collisionMap);;
+		void setCollisionMap(CollisionMap* collisionMap);
+
+		sf::FloatRect getBounds() const override { return m_sprite.getGlobalBounds(); }
+
 	protected:
 
 		sf::Sprite m_sprite;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 namespace sf
 {
@@ -25,6 +26,8 @@ class GameObject
 
 		virtual void update(float delta) = 0;
 		virtual void render(sf::RenderWindow& window) = 0;
+
+		virtual sf::FloatRect getBounds() const = 0;
 
 	protected:
 		bool m_active{ true };

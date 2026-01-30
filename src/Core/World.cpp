@@ -56,9 +56,6 @@ bool World::load()
 	m_layerZero = new MapLayer(*m_map, 0);
 	m_layerOne = new MapLayer(*m_map, 1);
 	m_layerTwo = new MapLayer(*m_map, 2);
-
-	//m_robotPool.acquire({ 530.f, 620.f });
-	//m_robotPool.acquire({ 900.f, 580.f });
 	
 	m_robotSpawner.setSpawnPoints({ {530.f, 620.f}, {900.f, 580.f}, {1200.f, 550.f} });
 	m_robotSpawner.SetIntervalRange(2.0f, 4.0f);
@@ -78,6 +75,23 @@ void World::update(uint32_t deltaMilliseconds)
 
 	m_robotSpawner.update(static_cast<float>(deltaMilliseconds), m_robotPool);
 	m_robotPool.updateAll(static_cast<float>(deltaMilliseconds));
+
+	Zombie* zombie = dynamic_cast<Zombie*>(m_character);
+	if (zombie)
+	{
+		const sf::FloatRect zb = zombie->getBounds();
+		for (const auto& up : m_robotPool.getObjects())
+		{
+			GameObject* obj = up.get();
+			if (!obj || !obj->isActive()) continue;
+			if (obj->getBounds().intersects(zb))
+			{
+				zombie->respawnAtStart();
+				break;
+			}
+			
+		}
+	}
 
 	
 }

@@ -26,6 +26,7 @@ class SpawnPool
 		void renderAll(sf::RenderWindow& window);
 		int activeCount() const;
 		void deactivateAll();
+		const std::vector<std::unique_ptr<GameObject>>& getObjects() const { return m_objects; }
 	private:
 		std::vector<std::unique_ptr<GameObject>> m_objects;
 		CreateFn m_createFn;
