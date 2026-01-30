@@ -11,7 +11,6 @@
 World::~World()
 {
 	delete m_character;
-	
 	delete m_layerZero;
 	delete m_layerOne;
 	delete m_layerTwo;
@@ -62,9 +61,9 @@ bool World::load()
 	//m_robotPool.acquire({ 900.f, 580.f });
 	
 	m_robotSpawner.setSpawnPoints({ {530.f, 620.f}, {900.f, 580.f}, {1200.f, 550.f} });
-	m_robotSpawner.SetInterval(3.0f);
+	m_robotSpawner.SetIntervalRange(2.0f, 4.0f);
 	m_robotSpawner.setMaxAlive(3);
-	m_robotSpawner.setLifetime(7.f);
+	m_robotSpawner.setLifetimeRange(5.0f,9.0f);
 	m_robotSpawner.setEnabled(true);
 
 	return true;

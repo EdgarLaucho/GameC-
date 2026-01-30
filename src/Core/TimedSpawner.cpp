@@ -1,15 +1,20 @@
 #include <Core/TimedSpawner.h>
 #include <Core/SpawnPool.h>
 #include <Gameplay/GameObject.h>
+#include <cmath>
+#include <algorithm>
+
 
 void TimedSpawner::setEnabled(bool enabled)
 {
 	m_enabled = enabled;
 }
 
-void TimedSpawner::SetInterval(float seconds)
+void TimedSpawner::SetIntervalRange(float minSeconds, float maxSeconds)
 {
-	m_interval = seconds;
+	m_minInterval = minSeconds;
+	m_maxInterval = maxSeconds;
+	m_nextInterval = randomRange(m_minInterval,m_maxInterval);
 }
 
 void TimedSpawner::setMaxAlive(int maxAlive)
@@ -17,9 +22,28 @@ void TimedSpawner::setMaxAlive(int maxAlive)
 	m_maxAlive = maxAlive;
 }
 
-void TimedSpawner::setLifetime(float seconds)
+void TimedSpawner::setLifetimeRange(float minSeconds, float maxSeconds)
 {
-	m_lifeTime = seconds;
+	m_minLifeTime = minSeconds;
+	m_maxLifeTime = maxSeconds;
+}
+
+float TimedSpawner::randomRange(float minV, float maxV)
+{
+	if(!std::isfinite(minV) || !std::isfinite(maxV))
+	{
+		return 0.f;
+	}
+	if (maxV < minV)
+	{
+		std::swap(minV, maxV);
+	}
+	if (minV == maxV)
+	{
+		return minV;
+	}
+	std::uniform_real_distribution<float> dist(minV, maxV);
+	return dist(m_rng);
 }
 
 void TimedSpawner::setSpawnPoints(const std::vector<sf::Vector2f>& points)
@@ -63,11 +87,13 @@ void TimedSpawner::update(float  deltaMs, SpawnPool& pool)
 
 	m_spawnTimer += deltaSeconds;
 
-	if (m_spawnTimer < m_interval)
+	if (m_spawnTimer < m_nextInterval)
 	{
 		return;
 	}
 	m_spawnTimer = 0.f;
+
+	m_nextInterval = randomRange(m_minInterval, m_maxInterval);
 
 	if (pool.activeCount() >= m_maxAlive)
 	{
@@ -80,7 +106,13 @@ void TimedSpawner::update(float  deltaMs, SpawnPool& pool)
 	GameObject* newObj = pool.acquire(spawnPos);
 	if (newObj) 
 	{
-		m_timeToLive[newObj] = m_lifeTime;
+		float ttl = randomRange(m_minLifeTime, m_maxLifeTime);
+		if (ttl <= 0.f)
+		{
+			ttl = 0.f;
+		}
+
+		m_timeToLive[newObj] = ttl;
 	}
 
 }
