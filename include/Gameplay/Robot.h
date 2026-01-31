@@ -21,7 +21,9 @@ public:
 
 
 private:
-	
+	float m_animTimer = 0.f;
+	int n_animFrame = 0;
+	static constexpr int RUN_COLS[4] = { 1,2,4,2 };
 
 	float m_speed{ 0.f };
 	int m_direction{ 1 };

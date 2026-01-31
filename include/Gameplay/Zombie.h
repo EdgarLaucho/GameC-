@@ -30,4 +30,8 @@ class Zombie : public Character
 		sf::Vector2f m_spawnPosition;
 		float m_deathY{ 2000.f };
 
+		float m_animTimer{ .0f };
+		int m_animFrame{ 0 };
+		static constexpr int RUN_COL[4] = { 1,2,4,2 };
+
 };

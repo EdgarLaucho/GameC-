@@ -90,6 +90,19 @@ void Robot::update(float deltaMilliseconds)
 	}
 
 	m_position.x = newPos.x;
+
+	m_animTimer += deltaMilliseconds/1000.f;
+	const float frameTime = 0.09f;
+	if (m_animTimer >= frameTime)
+	{
+		m_animTimer -= frameTime;
+		n_animFrame = (n_animFrame + 1) % 4;
+		const int col = RUN_COLS[n_animFrame];
+		const int row = 0;
+
+		m_sprite.setTextureRect(sf::IntRect(col * (int)m_tileWidth, row* (int)m_tileHeight, (int)m_tileWidth, (int)m_tileHeight));
+	}
+
 	Character::update(deltaMilliseconds);
 }
 

@@ -17,6 +17,7 @@ bool Character::init(const CharacterDescriptor& characterDescriptor)
 	m_velocity = sf::Vector2f(0.f, 0.f);
 	m_isOnGround = false;
 	
+	m_sprite.setTextureRect(sf::IntRect(0, 0, (int)m_tileWidth, (int)m_tileHeight));
 	return true;
 }
 
@@ -35,8 +36,11 @@ void Character::gravity(float deltaMilliseconds, float gravity)
         {
             auto tileSize = m_collisionMap->getTileSize();
 
-            float scaledWidth = m_tileWidth * m_sprite.getScale().x;
-            float scaledHeight = m_tileHeight * m_sprite.getScale().y;
+            const sf::Vector2f s = m_sprite.getScale();
+            const float absScaleX = std::abs(s.x);
+            const float absScaleY = std::abs(s.y);
+			float scaledWidth = m_tileWidth * absScaleX;
+            float scaledHeight = m_tileHeight * absScaleY;
 
             
             float feetY = newY + scaledHeight;
@@ -84,7 +88,7 @@ void Character::render(sf::RenderWindow& window)
 {
     if (!m_active) return;
 	// Extend this mechanism to be able to support animations
-	m_sprite.setTextureRect(sf::IntRect(0, 0, static_cast<int>(m_tileWidth), static_cast<int>(m_tileHeight)));
+	//m_sprite.setTextureRect(sf::IntRect(0, 0, static_cast<int>(m_tileWidth), static_cast<int>(m_tileHeight)));
 
 	window.draw(m_sprite);
 }

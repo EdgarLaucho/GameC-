@@ -33,6 +33,10 @@ bool Zombie::init(const ZombieDescriptor& zombieDescriptor)
 
 	
 	m_sprite.setScale(0.4f, 0.4f);
+
+	sf::Vector2f topLetft = m_sprite.getPosition();
+	m_sprite.setOrigin(m_tileWidth / 2.f, m_tileHeight);
+	m_sprite.setPosition(topLetft.x + (m_tileWidth / 2.f)*m_sprite.getScale().x, topLetft.y + (m_tileHeight)* m_sprite.getScale().y);
 	m_speed = zombieDescriptor.speed;
 	m_spawnPosition = m_position;
 	return true;
@@ -54,6 +58,37 @@ void Zombie::update(float deltaMilliseconds)
 		m_direction.x = .0f;
 	}
 	
+	if(m_direction.x<0.f)
+	{
+		m_sprite.setScale(-0.4f, 0.4f);
+	}
+	else if(m_direction.x>0.f)
+	{
+		m_sprite.setScale(0.4f, 0.4f);
+	}
+
+	const bool isRunning = m_direction.x != 0.f;
+
+	if(!isRunning)
+	{
+		m_sprite.setTextureRect(sf::IntRect(0, 0, (int)m_tileWidth, (int)m_tileHeight));
+		m_animFrame = 0;
+		m_animTimer = 0.f;
+	}
+	else
+	{
+		m_animTimer += deltaMilliseconds/1000.f;
+		const float frameTime = 0.09f;
+		if(m_animTimer >= frameTime) // Change frame every 100 milliseconds
+		{
+			m_animTimer -= frameTime;
+			m_animFrame = (m_animFrame + 1) % 4; // Assuming we have 4 frames for running animation
+			const int col = RUN_COL[m_animFrame];
+			const int row = 0; // Assuming running animation is in row 0
+			m_sprite.setTextureRect(sf::IntRect(col * (int)m_tileWidth, row * (int)m_tileHeight, (int)m_tileWidth, (int)m_tileHeight));
+		}
+	}
+
 	// Update final position
 	// IMPORTANT NOTE!! We are using delta time to change the position according to the elapsed time so, it doesn't matter how many FPS (calls to update per second) we do, 
 	// the sprite changes according to the elapsed time and not to the number of calls
@@ -75,6 +110,13 @@ void Zombie::update(float deltaMilliseconds)
 	}
 
 	Character::update(deltaMilliseconds);
+	const auto scale = m_sprite.getScale();
+	const float absScaleX = std::abs(scale.x);
+
+	m_sprite.setPosition(
+		m_position.x + (m_tileWidth * 0.5f) * absScaleX,
+		m_position.y + (m_tileHeight)*scale.y
+	);
 }
 
 void Zombie::respawnAtStart()
