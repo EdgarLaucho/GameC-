@@ -32,7 +32,7 @@ bool Zombie::init(const ZombieDescriptor& zombieDescriptor)
 		return false;
 
 	
-	m_sprite.setScale(0.3f, 0.3f);
+	m_sprite.setScale(0.4f, 0.4f);
 	m_speed = zombieDescriptor.speed;
 	m_spawnPosition = m_position;
 	return true;

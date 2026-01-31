@@ -3,7 +3,9 @@
 #include <cstdint>
 #include <Core/SpawnPool.h>
 #include <Core/TimedSpawner.h>
+#include <SFML/Graphics/Rect.hpp>
 #include <memory>
+
 
 class Character;
 class CollisionMap;
@@ -35,6 +37,8 @@ class World
 
 		void update(uint32_t deltaMilliseconds);
 		void render(sf::RenderWindow& window);
+		bool hasWon() const { return m_hasWon; }
+		
 
 	private:
 
@@ -51,4 +55,7 @@ class World
 		MapLayer* m_layerZero{ nullptr };
 		MapLayer* m_layerOne{ nullptr };
 		MapLayer* m_layerTwo{ nullptr };
+
+		sf::FloatRect m_goalArea{ 0.f,0.f,420.f,220.f };
+		bool m_hasWon{ false };
 };

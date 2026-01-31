@@ -2,6 +2,8 @@
 
 #include <cstdint>
 #include <string>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 namespace sf
 {
@@ -33,6 +35,9 @@ class Game
 
 	private:
 
+		sf::Font m_font;
+		sf::Text m_fpsText;
+		sf::Text m_winText;
 		sf::RenderWindow* m_window{ nullptr };
 		World* m_world{ nullptr };
 };

@@ -26,7 +26,7 @@ class Zombie : public Character
 
 		float m_gravity{ 2000.f };
 		float m_groundY{ 400.f };
-		float m_jumpForce{ 650.f };
+		float m_jumpForce{ 850.f };
 		sf::Vector2f m_spawnPosition;
 		float m_deathY{ 2000.f };
 

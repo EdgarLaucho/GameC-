@@ -63,17 +63,17 @@
  </tileset>
  <layer id="1" name="Tile Layer 1" width="28" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYBjcQAWKqQk0gJiRTvbxAjEPEubDo5ZSezkZEO5HxlwE9GHTQ2tAb/uIdctwsY/e4Uov/9DKDmzmU8MuXOmcXP/gy6vY5Cj1A73LBgCwHQjI
+   eJxjYBgF2IAcGqaV+dQEnECsggWT4y5a+JneYDj5hViAnm6Hu9/plU+pHa7kmoXPHcMh7gEhdQWq
   </data>
  </layer>
  <layer id="2" name="Tile Layer 2" width="28" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYBgF9ADMSGz+AXPFKBgFo2AUDF4AAGKsABM=
+   eJyTYGBgkBiCmFhAK/OJVUPIfAki1JLjb1LdhEstNQEu/1PTf8jmkiJOLTsJ+Y/a/iQF0NpeavoTX/zhM5/c/EPN8kUcigdDvIvRwXxcmJx4AADpuw5f
   </data>
  </layer>
  <layer id="3" name="Tile Layer 3" width="28" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFtAKCQCwAxdxI7FEwCkbBKBgFmAAA4csAXQ==
+   eJzVlEsKgDAMRKtrP1kVdy7b+5/QLFoIIa2jkYIDD0VwJp/SEHzKzv9R7QwxqbwfIJZkzVN5UvFtSftmIHtlFsHGzEaOVWf1qHUlIO/scDcX6zs6Y5TaCw3Ks7yRvX2Zl1Tf9NLbc95H9C53/OTMtmjVSipDy7qPkP71nnrzlL71PpI1aU/E17PfWGgp/ogLq2ocDg==
   </data>
  </layer>
 </map>

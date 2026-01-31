@@ -57,17 +57,21 @@ bool World::load()
 	m_layerOne = new MapLayer(*m_map, 1);
 	m_layerTwo = new MapLayer(*m_map, 2);
 	
-	m_robotSpawner.setSpawnPoints({ {530.f, 620.f}, {900.f, 580.f}, {1200.f, 550.f} });
-	m_robotSpawner.SetIntervalRange(2.0f, 4.0f);
-	m_robotSpawner.setMaxAlive(3);
-	m_robotSpawner.setLifetimeRange(5.0f,9.0f);
+	m_robotSpawner.setSpawnPoints({ {530.f, 620.f}, {900.f, 580.f}, {1300.f, 550.f}, {1300.f,350.f},{1300.f,100.f}, { 900.f,25.f } });
+	m_robotSpawner.SetIntervalRange(1.0f, 3.0f);
+	m_robotSpawner.setMaxAlive(6);
+	m_robotSpawner.setLifetimeRange(4.0f,8.0f);
 	m_robotSpawner.setEnabled(true);
 
+	m_goalArea = sf::FloatRect(0.f, 0.f, 550.f, 420.f);
 	return true;
 }
 
 void World::update(uint32_t deltaMilliseconds)
 {
+	if (m_hasWon)
+		return;
+
 	m_layerZero->update(sf::milliseconds(deltaMilliseconds));
 
 	if (m_character)
@@ -80,6 +84,11 @@ void World::update(uint32_t deltaMilliseconds)
 	if (zombie)
 	{
 		const sf::FloatRect zb = zombie->getBounds();
+		if (zb.intersects(m_goalArea)) 
+		{
+			m_hasWon = true;
+			return;
+		}
 		for (const auto& up : m_robotPool.getObjects())
 		{
 			GameObject* obj = up.get();
