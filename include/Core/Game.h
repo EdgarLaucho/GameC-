@@ -40,10 +40,12 @@ class Game
 		sf::Font m_font;
 		sf::Text m_fpsText;
 		sf::Text m_winText;
+		sf::Clock m_winClock;
 		sf::Text m_loseText;
 		sf::Clock m_loseClock;
 
 		sf::RenderWindow* m_window{ nullptr };
 		World* m_world{ nullptr };
 		bool m_startedLoseTimer{ false };
+		bool m_startedWinTimer{ false };
 };

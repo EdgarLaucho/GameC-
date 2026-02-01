@@ -62,9 +62,27 @@ void Game::update(uint32_t deltaMilliseconds)
 		}
 	}
 
+
+
+
 	// Update scene here
 	m_world->update(deltaMilliseconds);
 
+	//Win Timer close
+	if (m_world->hasWon())
+	{
+		if (!m_startedWinTimer) 
+		{
+			m_startedWinTimer = true;
+			m_winClock.restart();
+		}
+		if (m_winClock.getElapsedTime().asSeconds() >= 3.f)
+		{
+			m_window->close();
+		}
+	}
+
+	//Lose Timer close
 	if(m_world->hasLost())
 	{
 		if (!m_startedLoseTimer) 
