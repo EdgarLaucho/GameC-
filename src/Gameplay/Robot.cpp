@@ -32,7 +32,7 @@ bool Robot::init(const RobotDescriptor& robotDescriptor)
 		return false;
 	}
 
-	m_sprite.setScale(1.f,1.f);
+	m_sprite.setScale(0.9f,0.9f);
 	m_speed = robotDescriptor.speed;
 	m_direction = 1;
 	return true;

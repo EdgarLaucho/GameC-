@@ -58,7 +58,7 @@ bool World::load()
 	m_layerTwo = new MapLayer(*m_map, 2);
 	
 	m_robotSpawner.setSpawnPoints({ {530.f, 620.f}, {900.f, 580.f}, {1300.f, 550.f}, {1300.f,350.f},{1300.f,100.f}, { 900.f,25.f } });
-	m_robotSpawner.SetIntervalRange(1.5f, 2.f);
+	m_robotSpawner.SetIntervalRange(0.5f, 1.5f);
 	m_robotSpawner.setMaxAlive(6);
 	m_robotSpawner.setLifetimeRange(4.0f,8.0f);
 	m_robotSpawner.setEnabled(true);
