@@ -27,6 +27,14 @@ bool Game::init(GameCreateInfo& createInfo)
 	m_winText.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
 	m_winText.setPosition(m_window->getSize().x / 2.f, m_window->getSize().y / 2.f);
 
+	m_loseText.setFont(m_font);
+	m_loseText.setString("You Lose!");
+	m_loseText.setCharacterSize(75);
+	m_loseText.setFillColor(sf::Color::Red);
+	sf::FloatRect loseBounds = m_loseText.getLocalBounds();
+	m_loseText.setOrigin(loseBounds.left + loseBounds.width / 2.f, loseBounds.top + loseBounds.height / 2.f);
+	m_loseText.setPosition(m_window->getSize().x / 2.f, m_window->getSize().y / 2.f);
+
 	return true;
 }
 
@@ -56,6 +64,20 @@ void Game::update(uint32_t deltaMilliseconds)
 
 	// Update scene here
 	m_world->update(deltaMilliseconds);
+
+	if(m_world->hasLost())
+	{
+		if (!m_startedLoseTimer) 
+		{
+			m_startedLoseTimer = true;
+			m_loseClock.restart();
+		}
+
+		if (m_loseClock.getElapsedTime().asSeconds() >= 3.f)
+		{
+			m_window->close();
+		}
+	}
 }
 
 void Game::render()
@@ -67,6 +89,10 @@ void Game::render()
 	if (m_world->hasWon())
 	{
 		m_window->draw(m_winText);
+	}
+	else if (m_world->hasLost())
+	{
+		m_window->draw(m_loseText);
 	}
 
 	m_window->display();

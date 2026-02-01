@@ -44,6 +44,12 @@ bool Zombie::init(const ZombieDescriptor& zombieDescriptor)
 
 void Zombie::update(float deltaMilliseconds)
 {
+	if(isDead())
+	{
+		m_velocity = { 0.f,0.f };
+		return;
+	}
+
 	float dt = deltaMilliseconds / 1000.f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
@@ -104,10 +110,14 @@ void Zombie::update(float deltaMilliseconds)
 
 	if(m_position.y > m_deathY)
 	{
-		m_position = m_spawnPosition;
-		m_velocity = { 0.f,0.f };
-		m_isOnGround = false;
+		takeHit();
+		if(!isDead())
+		{
+			respawnAtStart();
+		}
 	}
+
+	
 
 	Character::update(deltaMilliseconds);
 	const auto scale = m_sprite.getScale();

@@ -76,6 +76,17 @@ void Character::gravity(float deltaMilliseconds, float gravity)
     
 }
 
+void Character::takeHit()
+{
+	if (dead) return;
+
+	hitCount++;
+    if (hitCount >= 5)
+    {
+        dead = true;
+    }
+}
+
 
 
 void Character::update(float deltaMilliseconds)

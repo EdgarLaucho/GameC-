@@ -38,6 +38,7 @@ class World
 		void update(uint32_t deltaMilliseconds);
 		void render(sf::RenderWindow& window);
 		bool hasWon() const { return m_hasWon; }
+		bool hasLost() const { return m_hasLost; };
 		
 
 	private:
@@ -58,4 +59,5 @@ class World
 
 		sf::FloatRect m_goalArea{ 0.f,0.f,420.f,220.f };
 		bool m_hasWon{ false };
+		bool m_hasLost{ false };
 };

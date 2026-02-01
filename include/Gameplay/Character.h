@@ -31,6 +31,9 @@ class Character : public GameObject
 
 		sf::FloatRect getBounds() const override { return m_sprite.getGlobalBounds(); }
 
+		void takeHit();
+		bool isDead() const { return dead; };
+
 	protected:
 
 		sf::Sprite m_sprite;
@@ -41,4 +44,6 @@ class Character : public GameObject
 		bool m_isOnGround = false;
 
 		CollisionMap* m_collisionMap{ nullptr };
+		int hitCount = 0;
+		bool dead = false;
 };

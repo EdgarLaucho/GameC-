@@ -58,7 +58,7 @@ bool World::load()
 	m_layerTwo = new MapLayer(*m_map, 2);
 	
 	m_robotSpawner.setSpawnPoints({ {530.f, 620.f}, {900.f, 580.f}, {1300.f, 550.f}, {1300.f,350.f},{1300.f,100.f}, { 900.f,25.f } });
-	m_robotSpawner.SetIntervalRange(1.0f, 3.0f);
+	m_robotSpawner.SetIntervalRange(1.f, 1.5f);
 	m_robotSpawner.setMaxAlive(6);
 	m_robotSpawner.setLifetimeRange(4.0f,8.0f);
 	m_robotSpawner.setEnabled(true);
@@ -69,7 +69,7 @@ bool World::load()
 
 void World::update(uint32_t deltaMilliseconds)
 {
-	if (m_hasWon)
+	if (m_hasWon || hasLost())
 		return;
 
 	m_layerZero->update(sf::milliseconds(deltaMilliseconds));
@@ -93,9 +93,19 @@ void World::update(uint32_t deltaMilliseconds)
 		{
 			GameObject* obj = up.get();
 			if (!obj || !obj->isActive()) continue;
+
 			if (obj->getBounds().intersects(zb))
 			{
-				zombie->respawnAtStart();
+				zombie->takeHit();
+
+				if (!zombie->isDead())
+				{
+					zombie->respawnAtStart();
+				}
+				else
+				{
+					m_hasLost = true;
+				}
 				break;
 			}
 			
