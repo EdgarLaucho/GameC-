@@ -81,6 +81,11 @@ void World::update(uint32_t deltaMilliseconds)
 	m_robotPool.updateAll(static_cast<float>(deltaMilliseconds));
 
 	Zombie* zombie = dynamic_cast<Zombie*>(m_character);
+	if(zombie && zombie->isDead())
+	{
+		m_hasLost = true;
+		return;
+	}
 	if (zombie)
 	{
 		const sf::FloatRect zb = zombie->getBounds();

@@ -43,8 +43,8 @@ void Character::gravity(float deltaMilliseconds, float gravity)
             float scaledHeight = m_tileHeight * absScaleY;
 
             
-            float feetY = newY + scaledHeight;
-            float margin = 3.f;
+            float feetY = newY + scaledHeight+1;
+            float margin = 15.f;
             float leftX = m_position.x + margin;
             float rightX = m_position.x + scaledWidth - margin;
             int tileY = static_cast<int>(feetY / tileSize.y);
