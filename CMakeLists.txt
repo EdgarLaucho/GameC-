@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.8)
-project(GameC++ LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.16)
+project(ZombieVsRobot LANGUAGES CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
@@ -62,14 +62,22 @@ set(PROJECT_FILES
   ${PROJECT_SOURCES}
 )
 
-include_directories(${PROJECT_NAME} PRIVATE ${tmxlite_INCLUDE_DIR} include)
-
 add_executable(${PROJECT_NAME} ${PROJECT_FILES})
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
+target_include_directories(${PROJECT_NAME} PRIVATE ${tmxlite_INCLUDE_DIR} include)
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics tmxlite)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/data
+        ${CMAKE_BINARY_DIR}/Data
+    COMMENT "Copy game assets"
+    VERBATIM)
 
 if(WIN32)
     add_custom_command(

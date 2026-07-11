@@ -1,3 +1,3 @@
 #pragma once
 
-constexpr char* GAME_TITLE = "GameTemplate";
+constexpr const char* GAME_TITLE = "Zombie vs Robot";

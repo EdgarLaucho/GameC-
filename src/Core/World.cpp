@@ -31,11 +31,6 @@ void World::resetRobot(GameObject& object, const sf::Vector2f& position)
 
 bool World::load()
 {
-
-	// To-Do, read ALL from file, this is just a quick example to understand that here is where entities are created but consider grouping/managing actors in a smarter way
-
-
-	// To-Do, Load level: this should have its own class
 	m_map = new tmx::Map();
 	if(!m_map->load("../Data/Levels/demo.tmx"))
 	{

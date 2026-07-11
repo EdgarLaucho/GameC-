@@ -1,1 +1,1 @@
-// To-Do. Ideally a UIScreen transition should be managed through a UIManager class
+// Placeholder for future menu screen implementation.

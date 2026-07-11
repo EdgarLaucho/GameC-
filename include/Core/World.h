@@ -30,10 +30,7 @@ class World
 
 		~World();
 
-		// TO-DO: Ideally the scene should be read from file.
 		bool load();
-
-		// To-Do: Implement a unload()
 
 		void update(uint32_t deltaMilliseconds);
 		void render(sf::RenderWindow& window);
@@ -43,14 +40,12 @@ class World
 
 	private:
 
-		// This is just an example. Think a good way to group the actors of your game. If they need any type of manager, etc...
 		std::unique_ptr<GameObject> createRobot(const sf::Vector2f& position);
 		static void resetRobot(GameObject& object, const sf::Vector2f& position);
 		Character* m_character{ nullptr };
 		SpawnPool m_robotPool;
 		TimedSpawner m_robotSpawner;
 
-		// To-Do: This should be in its own class, something like "Level" should work
 		tmx::Map* m_map{ nullptr };
 		CollisionMap* m_collisionMap{ nullptr };
 		MapLayer* m_layerZero{ nullptr };

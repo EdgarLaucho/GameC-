@@ -11,7 +11,7 @@ Zombie* Zombie::createZombie(const sf::Vector2f& postion, CollisionMap* collisio
 	Zombie::ZombieDescriptor zombieDescriptor;
 	zombieDescriptor.texture = zombieTexture;
 	zombieDescriptor.position = postion;
-	zombieDescriptor.speed = { 200.f , .0f }; // 400 units per second, or 0.4 units per millisecond, using the latter so it's in alignment with delta time
+	zombieDescriptor.speed = { 200.f , .0f };
 	zombieDescriptor.tileWidth = 192.f;
 	zombieDescriptor.tileHeight = 256.f;
 
@@ -85,19 +85,16 @@ void Zombie::update(float deltaMilliseconds)
 	{
 		m_animTimer += deltaMilliseconds/1000.f;
 		const float frameTime = 0.09f;
-		if(m_animTimer >= frameTime) // Change frame every 100 milliseconds
+		if(m_animTimer >= frameTime)
 		{
 			m_animTimer -= frameTime;
-			m_animFrame = (m_animFrame + 1) % 4; // Assuming we have 4 frames for running animation
+			m_animFrame = (m_animFrame + 1) % 4;
 			const int col = RUN_COL[m_animFrame];
-			const int row = 0; // Assuming running animation is in row 0
+			const int row = 0;
 			m_sprite.setTextureRect(sf::IntRect(col * (int)m_tileWidth, row * (int)m_tileHeight, (int)m_tileWidth, (int)m_tileHeight));
 		}
 	}
 
-	// Update final position
-	// IMPORTANT NOTE!! We are using delta time to change the position according to the elapsed time so, it doesn't matter how many FPS (calls to update per second) we do, 
-	// the sprite changes according to the elapsed time and not to the number of calls
 	m_position.x += (m_direction.x * m_speed.x * dt);
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_isOnGround)

@@ -40,8 +40,6 @@ bool Game::init(GameCreateInfo& createInfo)
 
 Game::~Game()
 {
-	// To-Do: make sure m_world is unloaded()
-
 	delete m_world;
 	delete m_window;
 }
@@ -53,7 +51,6 @@ bool Game::isRunning() const
 
 void Game::update(uint32_t deltaMilliseconds)
 {
-	// Check if user closed the window
 	for (auto event = sf::Event(); m_window->pollEvent(event);)
 	{
 		if (event.type == sf::Event::Closed)
@@ -61,14 +58,8 @@ void Game::update(uint32_t deltaMilliseconds)
 			m_window->close();
 		}
 	}
-
-
-
-
-	// Update scene here
 	m_world->update(deltaMilliseconds);
 
-	//Win Timer close
 	if (m_world->hasWon())
 	{
 		if (!m_startedWinTimer) 
@@ -82,7 +73,6 @@ void Game::update(uint32_t deltaMilliseconds)
 		}
 	}
 
-	//Lose Timer close
 	if(m_world->hasLost())
 	{
 		if (!m_startedLoseTimer) 
